@@ -1,14 +1,9 @@
 import Link from "next/link";
-import { useState } from "react";
+import MainContainer from "../components/MainContainer";
 
-
-export default function Users() {
-  const [users, setUsers] = useState([
-    { id: 1, name: "Vasia" },
-    { id: 2, name: "Petia" },
-  ]);
+export default function Users({ users }) {
   return (
-    <div>
+    <MainContainer>
       <h1>Users</h1>
       <ul>
         {users.map((user) => {
@@ -21,6 +16,15 @@ export default function Users() {
           );
         })}
       </ul>
-    </div>
+    </MainContainer>
   );
+}
+
+export async function getStaticProps(context) {
+  const response = await fetch("https://jsonplaceholder.typicode.com/users");
+  const users = await response.json();
+
+  return {
+    props: { users }, // will be passed to the page component as props
+  };
 }
